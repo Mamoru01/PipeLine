@@ -31,7 +31,7 @@ public class Material {
     }
 
     public void set_image(String path, String name) throws IOException {
-        this._image = ImageIO.read(new File(path, name));
+        this._image = ImageIO.read(new File(path, name + ".png"));
     }
 
     public BufferedImage get_image() {

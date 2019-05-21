@@ -1,5 +1,6 @@
 package model.pipe;
 
+import model.ConfigurationGame;
 import model.material.Material;
 
 import javax.imageio.ImageIO;
@@ -11,6 +12,18 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Pipe {
+
+    public Pipe(Material _material, Diameter _diameter, Direction _direction) {
+        this._material = _material;
+        this._diameter = _diameter;
+        this._direction = _direction;
+        this._water = false;
+        try {
+            setImageForDeametr();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Material get_material() {
         return _material;
@@ -85,15 +98,20 @@ public class Pipe {
         d100,
         d150
     }
-    public static class ViewPipe{
 
-        public static Map<Diameter, BufferedImage> diameterImages = new HashMap<Diameter,BufferedImage>();
+    private Map<Diameter, BufferedImage> diameterImages = new HashMap<Diameter,BufferedImage>();
 
-        public static void setImageForDeametr(Diameter diameter, String path, String name ) throws IOException {
-            diameterImages.put(diameter,ImageIO.read(new File(path, name)));
-        }
-
+    private void setImageForDeametr() throws IOException {
+        String path = ConfigurationGame.path;
+        diameterImages.put(Diameter.d80,ImageIO.read(new File(path, Diameter.d80.toString() + ".png")));
+        diameterImages.put(Diameter.d100,ImageIO.read(new File(path, Diameter.d100.toString() + ".png")));
+        diameterImages.put(Diameter.d150,ImageIO.read(new File(path, Diameter.d150.toString() + ".png")));
     }
+
+    public BufferedImage getImageDeametr(){
+        return diameterImages.get(_diameter);
+    }
+
     public enum Direction {
         Up,
         Down,
