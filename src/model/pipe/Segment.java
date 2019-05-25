@@ -69,18 +69,17 @@ public abstract class Segment{
         return null;
     }
 
-    private boolean connect (Pipe p1, Pipe p2){
-        return (p1.get_direction() == Up && p2.get_direction() == Down) ||
-                (p1.get_direction() == Down && p2.get_direction() == Up) ||
-                (p1.get_direction() == Right && p2.get_direction() == Left) ||
-                (p1.get_direction() == Left && p2.get_direction() == Right);
-    }
-
     public Pipe connect(Segment s){
+
         for (Pipe currentP : _pipes){
             for (Pipe nextP : s.get_pipes()){
-                if (connect(currentP,nextP))
+                if ((get_point().x + 1 == s.get_point().x && currentP.get_direction() == Down && nextP.get_direction() == Up)
+                        || (get_point().x - 1 == s.get_point().x && currentP.get_direction() == Up && nextP.get_direction() == Down)
+                        || (get_point().y + 1 == s.get_point().y && currentP.get_direction() == Right && nextP.get_direction() == Left)
+                        || (get_point().y - 1 == s.get_point().y && currentP.get_direction() == Left && nextP.get_direction() == Right)){
                     return currentP;
+                }
+
             }
         }
 

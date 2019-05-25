@@ -81,20 +81,9 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
 
     public void conductWater(){
         setBackground(Color.CYAN);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
     public void pourWater(){
         setBackground(Color.RED);
-        repaint();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
 }

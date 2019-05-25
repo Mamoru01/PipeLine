@@ -14,8 +14,11 @@ public class Tap extends Segment {
         Segment s = get_pipeLine().nextSegment(this);
 
         _pipes.get(0).set_water(true);
-        if (s == null) return false;
-
+        if (s == null) {
+            firePourWater();
+            return false;
+        }
+        fireConductWater();
         return s.conductWater(this);
     }
 
@@ -26,7 +29,6 @@ public class Tap extends Segment {
 
     @Override
     public boolean conductWater(Segment s) {
-        fireConductWater();
         return turnWater();
     }
 }

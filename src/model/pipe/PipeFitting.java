@@ -30,6 +30,7 @@ public class PipeFitting extends Segment{
                 currentPipe.connectability(otherPipe))
         {
             currentPipe.set_water(true);
+            otherPipe.set_water(true);
             Segment newS = get_pipeLine().nextSegment(this);
             if (newS != null){
                 fireConductWater();

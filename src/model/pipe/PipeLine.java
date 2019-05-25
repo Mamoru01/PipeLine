@@ -113,7 +113,7 @@ public class PipeLine {
         p2 = new Pipe(_mFactory.getMaterial("StainlessSteel"), Pipe.Diameter.d80, Pipe.Direction.Right);
         _segments.add(new PipeFitting(new Point(2,2),p1,p2));
 
-        p1 = new Pipe(_mFactory.getMaterial("Steel"), Pipe.Diameter.d80, Pipe.Direction.Up);
+        p1 = new Pipe(_mFactory.getMaterial("CarbonSteel"), Pipe.Diameter.d80, Pipe.Direction.Up);
         p2 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d100, Pipe.Direction.Right);
         _segments.add(new PipeFitting(new Point(3,2),p1,p2));
 
