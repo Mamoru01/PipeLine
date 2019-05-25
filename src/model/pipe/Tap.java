@@ -26,6 +26,7 @@ public class Tap extends Segment {
 
     @Override
     public boolean conductWater(Segment s) {
+        fireConductWater();
         return turnWater();
     }
 }

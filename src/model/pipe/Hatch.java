@@ -15,8 +15,10 @@ public class Hatch  extends Segment {
     public boolean conductWater(Segment s) {
         if (connect(s).connectability(s.connect(this))){
             connect(s).set_water(true);
+            fireConductWater();
             return true;
         }else{
+            firePourWater();
             return false;
         }
     }

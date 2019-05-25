@@ -18,6 +18,7 @@ public class TapView extends UnitView{
     public TapView(Tap tap) {
         super();
         this._tap = tap;
+        _tap.addUnitPipeActionListener(this);
 
         try {
             this.setIcon(createImage());

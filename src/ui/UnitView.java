@@ -1,5 +1,7 @@
 package ui;
 
+import model.events.UnitPipeActionListner;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,14 +9,14 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
-public abstract class UnitView extends JButton {
+public abstract class UnitView extends JButton implements UnitPipeActionListner {
 
     public UnitView() {
         setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder());
         setBackground(Color.darkGray);
-        //addActionListener(actionListener);
         addActionListener(new ButtonAction());
     }
 
@@ -74,6 +76,24 @@ public abstract class UnitView extends JButton {
     public class ButtonAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             rotated();
+        }
+    }
+
+    public void conductWater(){
+        setBackground(Color.CYAN);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public void pourWater(){
+        setBackground(Color.RED);
+        repaint();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

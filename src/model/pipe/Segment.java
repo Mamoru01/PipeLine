@@ -1,6 +1,7 @@
 package model.pipe;
 
 import model.ConfigurationGame;
+import model.events.UnitPipeActionListner;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import static model.pipe.Pipe.Direction.*;
 
-public abstract class Segment {
+public abstract class Segment{
 
     protected PipeLine get_pipeLine() {
         return _pipeLine;
@@ -87,4 +88,31 @@ public abstract class Segment {
     }
 
     public abstract boolean conductWater(Segment s);
+
+    // ---------------------- Порождает события -----------------------------
+
+    ArrayList<UnitPipeActionListner> PlayerListeners = new ArrayList();
+
+    // Присоединяет слушателя
+    public void addUnitPipeActionListener(UnitPipeActionListner l) {
+        PlayerListeners.add(l);
+    }
+
+    // Отсоединяет слушателя
+    public void removeUnitPipeActionListener(UnitPipeActionListner l) {
+        PlayerListeners.remove(l);
+    }
+
+    // Оповещает слушателей о событии
+    protected void fireConductWater() {
+        for (UnitPipeActionListner p:PlayerListeners){
+            p.conductWater();
+        }
+    }
+
+    protected void firePourWater() {
+        for (UnitPipeActionListner p:PlayerListeners){
+            p.pourWater();
+        }
+    }
 }
