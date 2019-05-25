@@ -7,12 +7,20 @@ import model.pipe.Tap;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GamePanel extends JFrame {
 
-    private JPanel _fieldPanel = new JPanel();
-    private JButton _readyButton = new JButton("Готово");
-    private JProgressBar _progressBar = new JProgressBar(0, 1000);
+    private JMenuBar menu = null;
+    private final String fileItems[] = new String []{"1 уровень", "Exit"};
+
+    private final JPanel _fieldPanel = new JPanel();
+    private final JButton _readyButton = new JButton("Готово");
+
+    private final JProgressBar _progressBar = new JProgressBar(0, 1000);
+    //final Timer _timer = new Timer(50, updateProBar);
+
     private PipeLine _pipeline;
     private final int CELL_SIZE = 100;
 
@@ -24,6 +32,10 @@ public class GamePanel extends JFrame {
 
         getContentPane().add(logoLabel, BorderLayout.CENTER);
         pack();
+
+        // Меню
+        createMenu();
+        setJMenuBar(menu);
 
         Box mainBox = Box.createVerticalBox();
 
@@ -45,8 +57,8 @@ public class GamePanel extends JFrame {
         // Игровое поле
         mainBox.add(Box.createVerticalStrut(10));
         _fieldPanel.setDoubleBuffered(true);
-        createField();
-        setEnabledField(true);
+        //createField();
+        setEnabledField(false);
         mainBox.add(_fieldPanel);
 
         setContentPane(mainBox);
@@ -105,5 +117,48 @@ public class GamePanel extends JFrame {
         Component comp[] = _fieldPanel.getComponents();
         for(Component c : comp) {    c.setEnabled(on);   }
     }
+
+    private void createMenu() {
+
+        menu = new JMenuBar();
+        JMenu fileMenu = new JMenu("Игра");
+
+        for (int i = 0; i < fileItems.length; i++) {
+
+            JMenuItem item = new JMenuItem(fileItems[i]);
+            item.setActionCommand(fileItems[i].toLowerCase());
+            item.addActionListener(new NewMenuListener());
+            fileMenu.add(item);
+        }
+        fileMenu.insertSeparator(1);
+
+        menu.add(fileMenu);
+    }
+
+    public class NewMenuListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+            if ("exit".equals(command)) {
+                System.exit(0);
+            }
+            if ("1 уровень".equals(command)) {
+                setEnabledField(true);
+                createField();
+                pack();
+            }
+        }
+    }
+
+    ActionListener updateProBar = new ActionListener() {
+        public void actionPerformed(ActionEvent actionEvent) {
+            int val = _progressBar.getValue();
+            if (val >= 100) {
+                //EndGame
+                return;
+            }
+            _progressBar.setValue(++val);
+        }
+    };
 
 }

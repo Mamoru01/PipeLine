@@ -22,6 +22,11 @@ public class PipeLine {
 
     private List<Segment> _segments;
 
+    public int get_Time() {
+        return _Time;
+    }
+
+    private int _Time;
 
     public PipeLine() {
 
@@ -85,6 +90,8 @@ public class PipeLine {
     }
 
     private void createTestPipeLine(){
+        _Time = 1000;
+
         _dimension = new Dimension(4,4);
         _segments.clear();
 
