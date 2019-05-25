@@ -1,5 +1,6 @@
 package ui;
 
+import model.events.ViewActionListner;
 import model.pipe.Hatch;
 import model.pipe.PipeFitting;
 import model.pipe.PipeLine;
@@ -10,9 +11,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GamePanel extends JFrame {
+public class GamePanel extends JFrame implements ViewActionListner{
 
     private JMenuBar menu = null;
+    private Box mainBox;
     private final String fileItems[] = new String []{"1 уровень", "2 уровень","Exit"};
 
     private final JPanel _fieldPanel = new JPanel();
@@ -36,7 +38,7 @@ public class GamePanel extends JFrame {
         createMenu();
         setJMenuBar(menu);
 
-        Box mainBox = Box.createVerticalBox();
+        mainBox = Box.createVerticalBox();
 
         // Шапка
         mainBox.add(Box.createVerticalStrut(10));
@@ -97,7 +99,7 @@ public class GamePanel extends JFrame {
                     }else/* if (_pipeline.getSegment(new Point(row,col)) instanceof Hatch)*/{
                         unitView = new HatchView((Hatch)_pipeline.get_Segment(new Point(row,col)));
                     }
-
+                    unitView.addViewActionListener(this);
                     _fieldPanel.add(unitView);
 
                 }catch (Exception e) {
@@ -114,7 +116,9 @@ public class GamePanel extends JFrame {
         _progressBar.setEnabled(on);
         _readyButton.setEnabled(on);
         Component comp[] = _fieldPanel.getComponents();
-        for(Component c : comp) {    c.setEnabled(on);   }
+        for(Component c : comp) {
+            c.setEnabled(on);
+        }
     }
 
     private void createMenu() {
@@ -173,6 +177,12 @@ public class GamePanel extends JFrame {
     ActionListener clickReadyButton = actionEvent -> {
         stopGame();
     };
+
+    @Override
+    public void updateView() {
+        pack();
+        this.update(this.getGraphics());
+    }
 
     // -------------- Таймер ----------------------------------
     ActionListener updateProBar = actionEvent -> {

@@ -1,6 +1,7 @@
 package ui;
 
 import model.events.UnitPipeActionListner;
+import model.events.ViewActionListner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 
 public abstract class UnitView extends JButton implements UnitPipeActionListner {
 
@@ -81,9 +82,39 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
 
     public void conductWater(){
         setBackground(Color.CYAN);
+        fireUpdateView();
     }
     public void pourWater(){
         setBackground(Color.RED);
+        fireUpdateView();
     }
+
+    // ---------------------- Порождает события -----------------------------
+
+    ArrayList<ViewActionListner> PlayerListeners = new ArrayList();
+
+    // Присоединяет слушателя
+    public void addViewActionListener(ViewActionListner l) {
+        PlayerListeners.add(l);
+    }
+
+    // Отсоединяет слушателя
+    public void removeViewActionListener(ViewActionListner l) {
+        PlayerListeners.remove(l);
+    }
+
+    // Оповещает слушателей о событии
+    protected void fireUpdateView() {
+        for (ViewActionListner p:PlayerListeners){
+            p.updateView();
+        }
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

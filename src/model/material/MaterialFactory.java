@@ -2,7 +2,6 @@ package model.material;
 
 import model.ConfigurationGame;
 
-import java.lang.module.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
