@@ -7,12 +7,19 @@ import model.pipe.Tap;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GamePanel extends JFrame {
 
-    private JPanel _fieldPanel = new JPanel();
-    private JButton _readyButton = new JButton("Готово");
-    private JProgressBar _progressBar = new JProgressBar(0, 1000);
+    private JMenuBar menu = null;
+    private final String fileItems[] = new String []{"1 уровень", "Exit"};
+
+    private final JPanel _fieldPanel = new JPanel();
+    private final JButton _readyButton = new JButton("Готово");
+
+    private final JProgressBar _progressBar = new JProgressBar(0, 1000);
+
     private PipeLine _pipeline;
     private final int CELL_SIZE = 100;
 
@@ -25,19 +32,23 @@ public class GamePanel extends JFrame {
         getContentPane().add(logoLabel, BorderLayout.CENTER);
         pack();
 
+        // Меню
+        createMenu();
+        setJMenuBar(menu);
+
         Box mainBox = Box.createVerticalBox();
 
         // Шапка
         mainBox.add(Box.createVerticalStrut(10));
         _readyButton.setBackground(Color.WHITE);
         JPanel panel = new JPanel();
+        _progressBar.setForeground(Color.darkGray);
+        _readyButton.addActionListener(clickReadyButton);
         panel.add(_progressBar);
         panel.add(_readyButton);
         panel.setBackground(Color.WHITE);
 
         mainBox.add(panel, BorderLayout.PAGE_START);
-
-        _progressBar.setSize(panel.getSize().width - _readyButton.getSize().width,_readyButton.getSize().height);
 
         //Создать трубопровод
         _pipeline = new PipeLine();
@@ -46,7 +57,7 @@ public class GamePanel extends JFrame {
         mainBox.add(Box.createVerticalStrut(10));
         _fieldPanel.setDoubleBuffered(true);
         createField();
-        setEnabledField(true);
+        setEnabledField(false);
         mainBox.add(_fieldPanel);
 
         setContentPane(mainBox);
@@ -105,5 +116,66 @@ public class GamePanel extends JFrame {
         Component comp[] = _fieldPanel.getComponents();
         for(Component c : comp) {    c.setEnabled(on);   }
     }
+
+    private void createMenu() {
+
+        menu = new JMenuBar();
+        JMenu fileMenu = new JMenu("Игра");
+
+        for (int i = 0; i < fileItems.length; i++) {
+
+            JMenuItem item = new JMenuItem(fileItems[i]);
+            item.setActionCommand(fileItems[i].toLowerCase());
+            item.addActionListener(new NewMenuListener());
+            fileMenu.add(item);
+        }
+        fileMenu.insertSeparator(1);
+
+        menu.add(fileMenu);
+    }
+
+    public class NewMenuListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String command = e.getActionCommand();
+            if ("exit".equals(command)) {
+                System.exit(0);
+            }
+            if ("1 уровень".equals(command)) {
+                _pipeline.create_1Lvl();
+                startGame();
+            }
+        }
+    }
+
+    private void  stopGame(){
+        setEnabledField(false);
+        _timer.stop();
+    }
+
+    private  void startGame(){
+        setEnabledField(true);
+        createField();
+        _progressBar.setMaximum(_pipeline.get_Time());
+        _progressBar.setValue(0);
+        _timer.start();
+        pack();
+    }
+
+    ActionListener clickReadyButton = actionEvent -> {
+        stopGame();
+    };
+
+    // -------------- Таймер ----------------------------------
+    ActionListener updateProBar = actionEvent -> {
+        int val = _progressBar.getValue();
+        if (val >= _progressBar.getMaximum()) {
+            stopGame();
+            return;
+        }
+        _progressBar.setValue(++val);
+    };
+
+    final Timer _timer = new Timer(10, updateProBar);
 
 }
