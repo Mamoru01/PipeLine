@@ -2,8 +2,7 @@ package model.pipe;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class PipeFitting extends Segment{
 
@@ -17,4 +16,8 @@ public class PipeFitting extends Segment{
         for (Pipe p : _pipes){ p.rotate(); }
     }
 
+    @Override
+    BufferedImage get_additionalImage() {
+        return null;
+    }
 }

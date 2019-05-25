@@ -1,8 +1,8 @@
-import ui.MainWindow;
+import ui.GamePanel;
 
 public class Main {
 
-    static MainWindow window = new MainWindow();
+    static GamePanel window = new GamePanel();
 
     public static void main(String[] args) {
         window.setTitle("PipeLine");
