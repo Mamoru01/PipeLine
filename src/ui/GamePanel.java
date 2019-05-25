@@ -1,5 +1,6 @@
 package ui;
 
+import model.events.ViewActionListner;
 import model.pipe.Hatch;
 import model.pipe.PipeFitting;
 import model.pipe.PipeLine;
@@ -10,10 +11,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GamePanel extends JFrame {
+public class GamePanel extends JFrame implements ViewActionListner{
 
     private JMenuBar menu = null;
-    private final String fileItems[] = new String []{"1 уровень", "Exit"};
+    private Box mainBox;
+    private final String fileItems[] = new String []{"1 уровень", "2 уровень","Exit"};
 
     private final JPanel _fieldPanel = new JPanel();
     private final JButton _readyButton = new JButton("Готово");
@@ -36,7 +38,7 @@ public class GamePanel extends JFrame {
         createMenu();
         setJMenuBar(menu);
 
-        Box mainBox = Box.createVerticalBox();
+        mainBox = Box.createVerticalBox();
 
         // Шапка
         mainBox.add(Box.createVerticalStrut(10));
@@ -90,14 +92,14 @@ public class GamePanel extends JFrame {
             for (int col = 1; col <= _pipeline.get_dimension().width; col++)
             {
                 try {
-                    if (_pipeline.getSegment(new Point(row,col)) instanceof PipeFitting){
-                        unitView = new PipeFittingView((PipeFitting)_pipeline.getSegment(new Point(row,col)));
-                    }else if (_pipeline.getSegment(new Point(row,col)) instanceof Tap){
-                        unitView = new TapView((Tap)_pipeline.getSegment(new Point(row,col)));
+                    if (_pipeline.get_Segment(new Point(row,col)) instanceof PipeFitting){
+                        unitView = new PipeFittingView((PipeFitting)_pipeline.get_Segment(new Point(row,col)));
+                    }else if (_pipeline.get_Segment(new Point(row,col)) instanceof Tap){
+                        unitView = new TapView((Tap)_pipeline.get_Segment(new Point(row,col)));
                     }else/* if (_pipeline.getSegment(new Point(row,col)) instanceof Hatch)*/{
-                        unitView = new HatchView((Hatch)_pipeline.getSegment(new Point(row,col)));
+                        unitView = new HatchView((Hatch)_pipeline.get_Segment(new Point(row,col)));
                     }
-
+                    unitView.addViewActionListener(this);
                     _fieldPanel.add(unitView);
 
                 }catch (Exception e) {
@@ -114,7 +116,9 @@ public class GamePanel extends JFrame {
         _progressBar.setEnabled(on);
         _readyButton.setEnabled(on);
         Component comp[] = _fieldPanel.getComponents();
-        for(Component c : comp) {    c.setEnabled(on);   }
+        for(Component c : comp) {
+            c.setEnabled(on);
+        }
     }
 
     private void createMenu() {
@@ -145,12 +149,20 @@ public class GamePanel extends JFrame {
                 _pipeline.create_1Lvl();
                 startGame();
             }
+            if ("2 уровень".equals(command)) {
+                _pipeline.create_2Lvl();
+                startGame();
+            }
         }
     }
 
     private void  stopGame(){
-        setEnabledField(false);
         _timer.stop();
+        setEnabledField(false);
+        String str;
+        str = (_pipeline.testing())?"Выигрышь":"Проигрышь";
+        JOptionPane.showMessageDialog(this,
+                "<html><h2>"+ str +"</h2><i>"+ str +"</i>");
     }
 
     private  void startGame(){
@@ -165,6 +177,12 @@ public class GamePanel extends JFrame {
     ActionListener clickReadyButton = actionEvent -> {
         stopGame();
     };
+
+    @Override
+    public void updateView() {
+        pack();
+        this.update(this.getGraphics());
+    }
 
     // -------------- Таймер ----------------------------------
     ActionListener updateProBar = actionEvent -> {

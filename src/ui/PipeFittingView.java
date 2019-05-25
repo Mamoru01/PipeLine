@@ -18,6 +18,7 @@ public class PipeFittingView extends UnitView {
     public PipeFittingView(PipeFitting pipeFitting) {
         super();
         this._pipe = pipeFitting;
+        _pipe.addUnitPipeActionListener(this);
 
         try {
             this.setIcon(createImage());

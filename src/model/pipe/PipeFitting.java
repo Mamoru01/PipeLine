@@ -20,4 +20,24 @@ public class PipeFitting extends Segment{
     BufferedImage get_additionalImage() {
         return null;
     }
+
+    @Override
+    public boolean conductWater(Segment previousSegment) {
+        Pipe currentPipe = connect(previousSegment);
+        Pipe otherPipe = previousSegment.connect(this);
+        if (currentPipe != null &&
+                otherPipe != null &&
+                currentPipe.connectability(otherPipe))
+        {
+            currentPipe.set_water(true);
+            otherPipe.set_water(true);
+            Segment newS = get_pipeLine().nextSegment(this);
+            if (newS != null){
+                fireConductWater();
+                return newS.conductWater(this);
+            }
+        }
+        firePourWater();
+        return false;
+    }
 }

@@ -18,6 +18,7 @@ public class HatchView extends UnitView {
     public HatchView(Hatch hatch) {
         super();
         this._hatch = hatch;
+        _hatch.addUnitPipeActionListener(this);
 
         try {
             this.setIcon(createImage());

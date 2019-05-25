@@ -2,7 +2,6 @@ package model.material;
 
 import model.ConfigurationGame;
 
-import java.lang.module.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +40,7 @@ public class MaterialFactory {
 
     private Material createMaterial(String name, Material perent) {
         Material m = new Material(name, perent);
+
         materials.put(name, m);
 
         try {
