@@ -19,7 +19,6 @@ public class GamePanel extends JFrame {
     private final JButton _readyButton = new JButton("Готово");
 
     private final JProgressBar _progressBar = new JProgressBar(0, 1000);
-    //final Timer _timer = new Timer(50, updateProBar);
 
     private PipeLine _pipeline;
     private final int CELL_SIZE = 100;
@@ -43,13 +42,13 @@ public class GamePanel extends JFrame {
         mainBox.add(Box.createVerticalStrut(10));
         _readyButton.setBackground(Color.WHITE);
         JPanel panel = new JPanel();
+        _progressBar.setForeground(Color.darkGray);
+        _readyButton.addActionListener(clickReadyButton);
         panel.add(_progressBar);
         panel.add(_readyButton);
         panel.setBackground(Color.WHITE);
 
         mainBox.add(panel, BorderLayout.PAGE_START);
-
-        _progressBar.setSize(panel.getSize().width - _readyButton.getSize().width,_readyButton.getSize().height);
 
         //Создать трубопровод
         _pipeline = new PipeLine();
@@ -57,7 +56,7 @@ public class GamePanel extends JFrame {
         // Игровое поле
         mainBox.add(Box.createVerticalStrut(10));
         _fieldPanel.setDoubleBuffered(true);
-        //createField();
+        createField();
         setEnabledField(false);
         mainBox.add(_fieldPanel);
 
@@ -143,22 +142,40 @@ public class GamePanel extends JFrame {
                 System.exit(0);
             }
             if ("1 уровень".equals(command)) {
-                setEnabledField(true);
-                createField();
-                pack();
+                _pipeline.create_1Lvl();
+                startGame();
             }
         }
     }
 
-    ActionListener updateProBar = new ActionListener() {
-        public void actionPerformed(ActionEvent actionEvent) {
-            int val = _progressBar.getValue();
-            if (val >= 100) {
-                //EndGame
-                return;
-            }
-            _progressBar.setValue(++val);
-        }
+    private void  stopGame(){
+        setEnabledField(false);
+        _timer.stop();
+    }
+
+    private  void startGame(){
+        setEnabledField(true);
+        createField();
+        _progressBar.setMaximum(_pipeline.get_Time());
+        _progressBar.setValue(0);
+        _timer.start();
+        pack();
+    }
+
+    ActionListener clickReadyButton = actionEvent -> {
+        stopGame();
     };
+
+    // -------------- Таймер ----------------------------------
+    ActionListener updateProBar = actionEvent -> {
+        int val = _progressBar.getValue();
+        if (val >= _progressBar.getMaximum()) {
+            stopGame();
+            return;
+        }
+        _progressBar.setValue(++val);
+    };
+
+    final Timer _timer = new Timer(10, updateProBar);
 
 }
