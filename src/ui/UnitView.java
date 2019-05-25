@@ -105,6 +105,7 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
 
     // Оповещает слушателей о событии
     protected void fireUpdateView() {
+
         for (ViewActionListner p:PlayerListeners){
             p.updateView();
         }
