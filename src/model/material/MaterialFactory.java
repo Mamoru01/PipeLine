@@ -41,6 +41,7 @@ public class MaterialFactory {
 
     private Material createMaterial(String name, Material perent) {
         Material m = new Material(name, perent);
+
         materials.put(name, m);
 
         try {

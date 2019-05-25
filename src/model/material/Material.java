@@ -18,11 +18,11 @@ public class Material {
         this._name = _name;
     }
 
-    public Material(String name, Material parents) {
+    public Material(String name, Material parent) {
         this._name = name;
-        if (_parent != null){
-            this._parent = parents;
-            parents.set_heirs(this);
+        if (parent != null){
+            this._parent = parent;
+            parent.set_heirs(this);
         }
     }
 

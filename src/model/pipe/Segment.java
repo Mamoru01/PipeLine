@@ -10,7 +10,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static model.pipe.Pipe.Direction.*;
+
 public abstract class Segment {
+
+    protected PipeLine get_pipeLine() {
+        return _pipeLine;
+    }
+
+    public void set_pipeLine(PipeLine _pipeLine) {
+        this._pipeLine = _pipeLine;
+    }
+
+    private PipeLine _pipeLine;
 
     public Point get_point() {
         return _point;
@@ -47,4 +59,32 @@ public abstract class Segment {
 
         return Image;
     }
+
+    public Pipe get_EmptyPipe(){
+        for(Pipe p: _pipes){
+            if (p.get_water() == false)
+                return p;
+        }
+        return null;
+    }
+
+    private boolean connect (Pipe p1, Pipe p2){
+        return (p1.get_direction() == Up && p2.get_direction() == Down) ||
+                (p1.get_direction() == Down && p2.get_direction() == Up) ||
+                (p1.get_direction() == Right && p2.get_direction() == Left) ||
+                (p1.get_direction() == Left && p2.get_direction() == Right);
+    }
+
+    public Pipe connect(Segment s){
+        for (Pipe currentP : _pipes){
+            for (Pipe nextP : s.get_pipes()){
+                if (connect(currentP,nextP))
+                    return currentP;
+            }
+        }
+
+        return null;
+    }
+
+    public abstract boolean conductWater(Segment s);
 }

@@ -64,7 +64,6 @@ public class Pipe {
 
     public boolean connectability (Pipe other){
         return _diameter == other._diameter &&
-                _direction == other._direction &&
                 _material.connectability(other.get_material());
     }
 

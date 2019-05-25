@@ -35,11 +35,11 @@ public class PipeLine {
 
         _segments = new ArrayList<>();
 
-        createTestPipeLine();
+        create_2Lvl();
 
     }
 
-    public Segment getSegment(Point p){
+    public Segment get_Segment(Point p){
         for (Segment s:_segments){
             if (s.get_point().equals(p))
                 return s;
@@ -47,7 +47,46 @@ public class PipeLine {
         return null;
     }
 
+    public Segment get_Segment(int x, int y){
+        Point p = new Point(x,y);
+        return get_Segment(p);
+    }
 
+    private Tap get_Tap(){
+        for (Segment s:_segments){
+            if (s instanceof Tap)
+                return (Tap)s;
+        }
+        return null;
+    }
+
+    private Hatch get_Hatch(){
+        for (Segment s:_segments){
+            if (s instanceof Hatch)
+                return (Hatch)s;
+        }
+        return null;
+    }
+
+    public Segment nextSegment(Segment previousSegment){
+        Pipe p = previousSegment.get_EmptyPipe();
+        switch (p.get_direction()){
+            case Right: return get_Segment(previousSegment._point.x, previousSegment._point.y+1);
+            case Left:return get_Segment(previousSegment._point.x, previousSegment._point.y-1);
+            case Down:return get_Segment(previousSegment._point.x + 1, previousSegment._point.y);
+            case Up:return get_Segment(previousSegment._point.x - 1, previousSegment._point.y);
+        }
+
+        return null;
+    }
+
+    public boolean testing(){
+        boolean res = true;
+
+        Segment currentSegment = get_Tap();
+
+        return get_Tap().conductWater(null);
+    }
 
     public void create_1Lvl(){
         _Time = 800;
@@ -87,9 +126,13 @@ public class PipeLine {
 
         p1 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d100, Pipe.Direction.Up);
         _segments.add(new Hatch(new Point(3,3),p1));
+
+        for (Segment s : _segments){
+            s.set_pipeLine(this);
+        }
     }
 
-    private void createTestPipeLine(){
+    public void create_2Lvl(){
         _Time = 1000;
 
         _dimension = new Dimension(4,4);
@@ -156,6 +199,10 @@ public class PipeLine {
 
         p1 = new Pipe(_mFactory.getMaterial("Steel"), Pipe.Diameter.d150, Pipe.Direction.Right);
         _segments.add(new Hatch(new Point(4,4),p1));
+
+        for (Segment s : _segments){
+            s.set_pipeLine(this);
+        }
     }
 
 }

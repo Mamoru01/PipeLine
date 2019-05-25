@@ -12,6 +12,16 @@ public class Hatch  extends Segment {
     }
 
     @Override
+    public boolean conductWater(Segment s) {
+        if (connect(s).connectability(s.connect(this))){
+            connect(s).set_water(true);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
     public BufferedImage get_additionalImage() {
         return get_Image("HATCH");
     }
