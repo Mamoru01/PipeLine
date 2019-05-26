@@ -28,6 +28,18 @@ public class PipeLine {
 
     private int _Time;
 
+    public PipeLine(Dimension _dimension, List<Segment> _segments, int _Time) {
+
+        this._mFactory = new MaterialFactory();
+        this._dimension = _dimension;
+        this._segments = _segments;
+        this._Time = _Time;
+
+        for (Segment s : _segments){
+            s.set_pipeLine(this);
+        }
+    }
+
     public PipeLine() {
 
         this._mFactory = new MaterialFactory();

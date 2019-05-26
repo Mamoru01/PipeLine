@@ -1,10 +1,7 @@
 package ui;
 
 import model.events.ViewActionListner;
-import model.pipe.Hatch;
-import model.pipe.PipeFitting;
-import model.pipe.PipeLine;
-import model.pipe.Tap;
+import model.pipe.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +21,9 @@ public class GamePanel extends JFrame implements ViewActionListner{
 
     private PipeLine _pipeline;
     private final int CELL_SIZE = 100;
+
+
+    private FactoryPipeLine _lvlFactory = new FactoryPipeLine();
 
     public GamePanel() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -146,11 +146,13 @@ public class GamePanel extends JFrame implements ViewActionListner{
                 System.exit(0);
             }
             if ("1 уровень".equals(command)) {
-                _pipeline.create_1Lvl();
+                //_pipeline.create_1Lvl();
+                _pipeline = _lvlFactory.createLvl(1L);
                 startGame();
             }
             if ("2 уровень".equals(command)) {
-                _pipeline.create_2Lvl();
+                //_pipeline.create_2Lvl();
+                _pipeline = _lvlFactory.createLvl(2L);
                 startGame();
             }
         }

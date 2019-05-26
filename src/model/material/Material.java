@@ -73,9 +73,6 @@ public class Material {
     public String toString() {
         return "Material{" +
                 "_name='" + _name + '\'' +
-                ", _heirs=" + _heirs +
-                ", _parents=" + _parent +
-                ", _image=" + _image +
                 '}';
     }
 

@@ -31,4 +31,13 @@ public class Tap extends Segment {
     public boolean conductWater(Segment s) {
         return turnWater();
     }
+
+    @Override
+    public String toString() {
+        return "Tap{" +
+                "_point=" + _point +
+                ", _pipes=" + _pipes +
+                ", PlayerListeners=" + PlayerListeners +
+                '}';
+    }
 }

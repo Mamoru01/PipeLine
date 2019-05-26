@@ -68,15 +68,6 @@ public class Pipe {
     }
 
     @Override
-    public String toString() {
-        return "Pipe{" +
-                "_diameter=" + _diameter +
-                ", _direction=" + _direction +
-                ", _water=" + _water +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
@@ -116,5 +107,14 @@ public class Pipe {
         Down,
         Left,
         Right
+    }
+
+    @Override
+    public String toString() {
+        return "Pipe{" +
+                "_material=" + _material +
+                ", _diameter=" + _diameter +
+                ", _direction=" + _direction +
+                '}';
     }
 }
