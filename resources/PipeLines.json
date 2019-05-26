@@ -166,7 +166,7 @@
           },
           "pipe2": {
             "material": "Metall",
-            "diameter": "d80",
+            "diameter": "d100",
             "direction": "Right"
           }
         },
@@ -202,12 +202,12 @@
           "type": "pipefitting",
           "point": "3,3",
           "pipe1": {
-            "material": "Steel",
-            "diameter": "d80",
+            "material": "Plastic",
+            "diameter": "d150",
             "direction": "Down"
           },
           "pipe2": {
-            "material": "Metall",
+            "material": "Plastic",
             "diameter": "d100",
             "direction": "Right"
           }
