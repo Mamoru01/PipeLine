@@ -47,7 +47,7 @@ public class PipeLine {
 
         _segments = new ArrayList<>();
 
-        create_2Lvl();
+        create_TestLvl();
 
     }
 
@@ -93,58 +93,10 @@ public class PipeLine {
     }
 
     public boolean testing(){
-        boolean res = true;
-
-        Segment currentSegment = get_Tap();
-
         return get_Tap().conductWater(null);
     }
 
-    public void create_1Lvl(){
-        _Time = 800;
-        _dimension = new Dimension(3,3);
-        _segments.clear();
-
-        Pipe p1 = new Pipe(_mFactory.getMaterial("Steel"), Pipe.Diameter.d80, Pipe.Direction.Down);
-        Pipe p2 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d80, Pipe.Direction.Right);
-        _segments.add(new PipeFitting(new Point(1,1),p1,p2));
-
-        p1 = new Pipe(_mFactory.getMaterial("Steel"), Pipe.Diameter.d80, Pipe.Direction.Left);
-        p2 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d80, Pipe.Direction.Up);
-        _segments.add(new PipeFitting(new Point(2,1),p1,p2));
-
-        p1 = new Pipe(_mFactory.getMaterial("StainlessSteel"), Pipe.Diameter.d80, Pipe.Direction.Up);
-        p2 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d80, Pipe.Direction.Right);
-        _segments.add(new PipeFitting(new Point(3,1),p1,p2));
-
-        p1 = new Pipe(_mFactory.getMaterial("Steel"), Pipe.Diameter.d80, Pipe.Direction.Down);
-        p2 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d80, Pipe.Direction.Up);
-        _segments.add(new PipeFitting(new Point(1,2),p1,p2));
-
-        p1 = new Pipe(_mFactory.getMaterial("Steel"), Pipe.Diameter.d80, Pipe.Direction.Down);
-        p2 = new Pipe(_mFactory.getMaterial("StainlessSteel"), Pipe.Diameter.d80, Pipe.Direction.Right);
-        _segments.add(new PipeFitting(new Point(2,2),p1,p2));
-
-        p1 = new Pipe(_mFactory.getMaterial("CarbonSteel"), Pipe.Diameter.d80, Pipe.Direction.Up);
-        p2 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d100, Pipe.Direction.Right);
-        _segments.add(new PipeFitting(new Point(3,2),p1,p2));
-
-        p1 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d80, Pipe.Direction.Right);
-        p2 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d150, Pipe.Direction.Up);
-        _segments.add(new PipeFitting(new Point(1,3),p1,p2));
-
-        p1 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d150, Pipe.Direction.Down);
-       _segments.add(new Tap(new Point(2,3),p1));
-
-        p1 = new Pipe(_mFactory.getMaterial("Metall"), Pipe.Diameter.d100, Pipe.Direction.Up);
-        _segments.add(new Hatch(new Point(3,3),p1));
-
-        for (Segment s : _segments){
-            s.set_pipeLine(this);
-        }
-    }
-
-    public void create_2Lvl(){
+    public void create_TestLvl(){
         _Time = 1000;
 
         _dimension = new Dimension(4,4);

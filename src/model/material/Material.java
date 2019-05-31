@@ -26,7 +26,7 @@ public class Material {
         }
     }
 
-     public void set_heirs(Material _heirs) {
+    public void set_heirs(Material _heirs) {
         this._heirs.add(_heirs);
     }
 
@@ -39,19 +39,7 @@ public class Material {
     }
 
     public boolean connectability(Material Other){
-
-        if (this.equals(Other))
-            return true;
-
-        if (this._parent != null && this._parent.equals(Other))
-            return true;
-
-        for (Material heir: _heirs){
-            if (heir != null && heir.equals(Other))
-                return true;
-        }
-
-        return false;
+        return compareParents(Other) || compareHeirs(Other);
     }
 
     public boolean  compareParents(Material material){
