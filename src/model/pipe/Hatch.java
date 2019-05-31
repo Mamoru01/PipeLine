@@ -36,6 +36,11 @@ public class Hatch  extends Segment {
     }
 
     @Override
+    public String type() {
+        return "Hatch";
+    }
+
+    @Override
     public String toString() {
         return "Hatch{" +
                 "_point=" + _point +

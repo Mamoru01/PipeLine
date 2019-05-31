@@ -21,6 +21,12 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
         addActionListener(new ButtonAction());
     }
 
+    protected void setDescriprion(){
+        setToolTipText(getDescriprion());
+    }
+
+    protected abstract String getDescriprion();
+
     protected abstract ImageIcon createImage() throws IOException;
 
     public abstract Point getPoint();

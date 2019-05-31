@@ -49,4 +49,11 @@ public class PipeFitting extends Segment{
                 ", PlayerListeners=" + PlayerListeners +
                 '}';
     }
+
+
+    @Override
+    public String type() {
+        return (_pipes.get(0).equals(_pipes.get(1)))?"Pipe":"Fitting";
+    }
+
 }

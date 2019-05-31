@@ -33,6 +33,11 @@ public class Tap extends Segment {
     }
 
     @Override
+    public String type() {
+        return "Tap";
+    }
+
+    @Override
     public String toString() {
         return "Tap{" +
                 "_point=" + _point +

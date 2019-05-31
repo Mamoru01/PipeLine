@@ -82,6 +82,7 @@ public class GamePanel extends JFrame implements ViewActionListner{
     }
 
     private void createField(){
+
         _fieldPanel.setDoubleBuffered(true);
         _fieldPanel.setLayout(new GridLayout(_pipeline.get_dimension().height, _pipeline.get_dimension().width));
 
@@ -125,11 +126,13 @@ public class GamePanel extends JFrame implements ViewActionListner{
         _fieldPanel.validate();
     }
 
-
     private void setEnabledField(boolean on){
+
         _progressBar.setEnabled(on);
         _readyButton.setEnabled(on);
+
         Component[] comp = _fieldPanel.getComponents();
+
         for(Component c : comp) {
             c.setEnabled(on);
         }
@@ -160,7 +163,7 @@ public class GamePanel extends JFrame implements ViewActionListner{
 
             String command = e.getActionCommand();
 
-            if ("Выход".equals(command)) {
+            if ("выход".equals(command)) {
                 System.exit(0);
             }
 
@@ -177,7 +180,7 @@ public class GamePanel extends JFrame implements ViewActionListner{
         _timer.stop();
         setEnabledField(false);
         String str;
-        str = (_pipeline.testing())?"Выигрышь":"Проигрышь";
+        str = (_pipeline.testing())?"Выигрыш":"Проигрыш";
         JOptionPane.showMessageDialog(this,
                 "<html><h2>"+ str +"</h2><i>"+ str +"</i>");
     }

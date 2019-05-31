@@ -73,8 +73,8 @@ public class Pipe {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pipe pipe = (Pipe) o;
-        return _diameter == pipe._diameter &&
-                _direction == pipe._direction &&
+        return _diameter.equals(pipe._diameter ) &&
+                _material.equals(pipe._material ) &&
                 Objects.equals(_water, pipe._water);
     }
 
