@@ -14,10 +14,6 @@ public class Material {
 
     private BufferedImage _image = null;
 
-    public Material(String _name) {
-        this._name = _name;
-    }
-
     Material(String name, Material parent) {
         this._name = name;
         if (parent != null){
@@ -26,11 +22,11 @@ public class Material {
         }
     }
 
-    public void set_heirs(Material _heirs) {
+    private void set_heirs(Material _heirs) {
         this._heirs.add(_heirs);
     }
 
-    public void set_image(String path, String name) throws IOException {
+    void set_image(String path, String name) throws IOException {
         this._image = ImageIO.read(new File(path, name + ".png"));
     }
 
