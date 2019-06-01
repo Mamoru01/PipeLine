@@ -4,23 +4,35 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
+/**
+ * Фитинг или частный случай фитинга - труба, если p1 эквивалентен p2.
+ * Сегмент трубы, который является основной частью трубопровода.
+ */
 public class PipeFitting extends Segment{
 
+    /**
+     * @param _point расположение фитинга на поле
+     * @param p1 труба, являющееся частью люка
+     * @param p2 труба, являющееся частью люка
+     */
     public PipeFitting(Point _point,Pipe p1, Pipe p2) {
         super(_point);
         _pipes.add(p1);
         _pipes.add(p2);
     }
 
-    public void rotate(){
-        for (Pipe p : _pipes){ p.rotate(); }
-    }
-
+    /**
+     * @return null
+     */
     @Override
     BufferedImage get_additionalImage() {
         return null;
     }
 
+    /**
+     * @param previousSegment Предыдущий сегмент трубопровода
+     * @return True - если текущий сегмент и все последующие могут провести воду, false - если нет
+     */
     @Override
     public boolean conductWater(Segment previousSegment) {
         Pipe currentPipe = connect(previousSegment);

@@ -59,7 +59,7 @@ public class PipeLine {
         return null;
     }
 
-    public Segment get_Segment(int x, int y){
+    private Segment get_Segment(int x, int y){
         Point p = new Point(x,y);
         return get_Segment(p);
     }
@@ -93,10 +93,11 @@ public class PipeLine {
     }
 
     public boolean testing(){
+        assert get_Tap() != null;
         return get_Tap().conductWater(null);
     }
 
-    public void create_TestLvl(){
+    private void create_TestLvl(){
         _Time = 1000;
 
         _dimension = new Dimension(4,4);
@@ -163,10 +164,6 @@ public class PipeLine {
 
         p1 = new Pipe(_mFactory.getMaterial("Steel"), Pipe.Diameter.d150, Pipe.Direction.Right);
         _segments.add(new Hatch(new Point(4,4),p1));
-
-        for (Segment s : _segments){
-            s.set_pipeLine(this);
-        }
     }
 
 }
