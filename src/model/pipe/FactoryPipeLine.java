@@ -13,9 +13,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
+//TODO Переделать под паттерн - строитель
+
+/**
+ * Фабрика трубопроводов
+ */
 public class FactoryPipeLine {
 
     private MaterialFactory _mFactory;
@@ -27,13 +31,14 @@ public class FactoryPipeLine {
 
         try {
             jo = (JSONObject) new JSONParser().parse(new FileReader(ConfigurationGame.pathLvl +"\\PipeLines.json"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * @return id всех доступных уровней
+     */
     public List<Long> get_numbersLvls(){
         if (jo == null)
             return null;
@@ -41,10 +46,9 @@ public class FactoryPipeLine {
         List<Long> NumberLvls= new ArrayList<>();
 
         JSONArray lvls = (JSONArray) jo.get("lvls");
-        Iterator lvlsItr = lvls.iterator();
 
-        while (lvlsItr.hasNext()) {
-            JSONObject test = (JSONObject) lvlsItr.next();
+        for (Object lvl : lvls) {
+            JSONObject test = (JSONObject) lvl;
             NumberLvls.add((Long) test.get("lvl"));
             System.out.println("Level available № " + test.get("lvl"));
         }
@@ -52,14 +56,17 @@ public class FactoryPipeLine {
         return NumberLvls;
     }
 
+    /**
+     * @param number id уровня
+     * @return json-объект уровня
+     */
     private JSONObject get_Lvl(Long number){
 
         JSONArray lvls = (JSONArray) jo.get("lvls");
-        Iterator lvlsItr = lvls.iterator();
 
-        while (lvlsItr.hasNext()) {
-            JSONObject test = (JSONObject) lvlsItr.next();
-            if (test.get("lvl") == number){
+        for (Object lvl : lvls) {
+            JSONObject test = (JSONObject) lvl;
+            if (test.get("lvl") == number) {
                 return test;
             }
         }
@@ -67,18 +74,25 @@ public class FactoryPipeLine {
         return  null;
     }
 
+    /**
+     * @param JSONsegments json-массив, описывающий сегменты уровня
+     * @return Лист - сегментов
+     */
     private List<Segment>  get_Segments(JSONArray JSONsegments){
 
-        List<Segment> segments = new ArrayList <Segment>();
-        Iterator segmentJSONItr = JSONsegments.iterator();
+        List<Segment> segments = new ArrayList<>();
 
-        while (segmentJSONItr.hasNext()) {
-            segments.add(get_Segment((JSONObject) segmentJSONItr.next()));
+        for (Object jsoNsegment : JSONsegments) {
+            segments.add(get_Segment((JSONObject) jsoNsegment));
         }
 
         return segments;
     }
 
+    /**
+     * @param JSONsegment json-объект, описывающий сегмент
+     * @return Сегмент трубопровода
+     */
     private Segment  get_Segment(JSONObject JSONsegment){
 
         Segment s = null;
@@ -88,7 +102,7 @@ public class FactoryPipeLine {
         List <String> pointListStr = Arrays.asList(((String) JSONsegment.get("point")).split(","));
 
         p.x = Integer.parseInt(pointListStr.get(0));
-        p.y = Integer.parseInt(pointListStr.get(1));
+        p. y = Integer.parseInt(pointListStr.get(1));
         System.out.println(JSONsegment.get("type").toString());
 
         String str = (String) JSONsegment.get("type");
@@ -99,15 +113,19 @@ public class FactoryPipeLine {
         System.out.println(pipe1.toString());
 
 
-        if (str.equals("pipefitting")){
-            Pipe pipe2 = get_Pipe((JSONObject) JSONsegment.get("pipe2"));
-            System.out.println(JSONsegment.get("pipe2").toString());
-            System.out.println(pipe2.toString());
-            s = new PipeFitting(p,pipe1,pipe2);
-        }else  if (str.equals("tap")){
-            s = new Tap(p,pipe1);
-        }else if (str.equals("hatch")){
-            s = new Hatch(p,pipe1);
+        switch (str) {
+            case "pipefitting":
+                Pipe pipe2 = get_Pipe((JSONObject) JSONsegment.get("pipe2"));
+                System.out.println(JSONsegment.get("pipe2").toString());
+                System.out.println(pipe2.toString());
+                s = new PipeFitting(p, pipe1, pipe2);
+                break;
+            case "tap":
+                s = new Tap(p, pipe1);
+                break;
+            case "hatch":
+                s = new Hatch(p, pipe1);
+                break;
         }
 
         return s;
@@ -141,6 +159,11 @@ public class FactoryPipeLine {
         return d;
 
     }
+
+    /**
+     * @param JSONpipe json-объект, описывающий конец трубы
+     * @return pipe
+     */
         private Pipe  get_Pipe(JSONObject JSONpipe){
 
         Material material = _mFactory.getMaterial((String) JSONpipe.get("material"));
@@ -153,6 +176,10 @@ public class FactoryPipeLine {
         return new Pipe(material,diameter,direction);
     }
 
+    /**
+     * @param numberLvl id-уровня
+     * @return трубопровод из уровня
+     */
     public PipeLine createLvl(Long numberLvl){
         if (jo == null)
             return null;
@@ -162,6 +189,9 @@ public class FactoryPipeLine {
         int time;
 
         JSONObject lvl = get_Lvl(numberLvl);
+
+        assert lvl != null;
+
         time = Integer.parseInt((String) lvl.get("time"));
         List <String> dimensionListStr = Arrays.asList(((String) lvl.get("dimension")).split("\\*"));
 
