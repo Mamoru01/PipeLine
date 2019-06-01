@@ -30,8 +30,8 @@ public class Material {
     private BufferedImage _image = null;
 
     /**
-     * @param name название материала
-     * @param parent ссылка на родительский материал
+     * @param name Название материала
+     * @param parent Ссылка на родительский материал
      */
     Material(String name, Material parent) {
 
@@ -47,39 +47,39 @@ public class Material {
     }
 
     /**
-     * @param _heirs ссылка на дочерний материал
+     * @param _heirs Ссылка на дочерний материал
      */
     private void set_heirs(Material _heirs) {
         this._heirs.add(_heirs);
     }
 
     /**
-     * @param path путь ко всем изображением
-     * @param name название изображения (без маски)
-     * @throws IOException нет такого изображения
+     * @param path Путь ко всем изображением
+     * @param name Название изображения (без маски)
+     * @throws IOException Нет такого изображения
      */
-    private void set_image(String path, String name) throws IOException {
+    public void set_image(String path, String name) throws IOException {
         this._image = ImageIO.read(new File(path, name + ".png"));
     }
 
     /**
-     * @return изображение, которое описывает текущий материал
+     * @return Изображение, которое описывает текущий материал
      */
     public BufferedImage get_image() {
         return _image;
     }
 
     /**
-     * @param Other сравниваемый материал
-     * @return true - если материалы совместимы, иначе false
+     * @param Other Сравниваемый материал
+     * @return True - если материалы совместимы, иначе false
      */
     public boolean connectability(Material Other){
         return compareParents(Other) || compareHeirs(Other);
     }
 
     /**
-     * @param material сравнивыемый материал
-     * @return true - если материал является родительским, иначе false
+     * @param material Сравнивыемый материал
+     * @return True - если материал является родительским, иначе false
      */
     private boolean  compareParents(Material material){
         if (this.equals(material))
@@ -90,8 +90,8 @@ public class Material {
     }
 
     /**
-     * @param material сравнивыемый материал
-     * @return true - если материал является дочерним, иначе false
+     * @param material Сравнивыемый материал
+     * @return True - если материал является дочерним, иначе false
      */
     private boolean compareHeirs(Material material){
         if (this.equals(material))
@@ -104,8 +104,8 @@ public class Material {
     }
 
     /**
-     * @param o сравнивыемый материал
-     * @return true - если материал является таким же, иначе false
+     * @param o Сравнивыемый материал
+     * @return True - если материал является таким же, иначе false
      */
     @Override
     public boolean equals(Object o) {
@@ -118,7 +118,7 @@ public class Material {
     }
 
     /**
-     * @return hash объекта
+     * @return Hash объекта
      */
     @Override
     public int hashCode() {
@@ -126,7 +126,7 @@ public class Material {
     }
 
     /**
-     * @return название материала
+     * @return Название материала
      */
     @Override
     public String toString() {
