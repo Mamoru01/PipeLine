@@ -1,3 +1,4 @@
+import model.pipe.FactoryPipeLine;
 import ui.GamePanel;
 
 public class Main {
@@ -8,6 +9,9 @@ public class Main {
 
         final String dir = System.getProperty("user.dir")+ "\\resources\\Image";
         System.out.println("current dirImage = " + dir);
+
+        FactoryPipeLine pl = new FactoryPipeLine();
+        pl.get_numbersLvls();
 
         window.setTitle("PipeLine");
         window.setVisible(true);

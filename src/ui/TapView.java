@@ -17,6 +17,7 @@ public class TapView extends UnitView{
 
     public TapView(Tap tap) {
         super();
+
         this._tap = tap;
         _tap.addUnitPipeActionListener(this);
 
@@ -28,6 +29,7 @@ public class TapView extends UnitView{
             this.setBackground(Color.WHITE);
         }
 
+        setDescriprion();
     }
 
     @Override
@@ -79,4 +81,8 @@ public class TapView extends UnitView{
         _tap.rotate();
     }
 
+    @Override
+    protected String getDescriprion() {
+        return _tap.getDescriptions();
+    }
 }

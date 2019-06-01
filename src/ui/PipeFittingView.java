@@ -27,6 +27,8 @@ public class PipeFittingView extends UnitView {
             this.setText("Error");
             this.setBackground(Color.WHITE);
         }
+
+        setDescriprion();
     }
 
     @Override
@@ -125,5 +127,9 @@ public class PipeFittingView extends UnitView {
         _pipe.rotate();
     }
 
+    @Override
+    protected String getDescriprion() {
+        return _pipe.getDescriptions();
+    }
 
 }

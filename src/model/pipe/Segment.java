@@ -86,6 +86,19 @@ public abstract class Segment{
         return null;
     }
 
+    public abstract String type();
+
+    public String getDescriptions(){
+
+        String str = type() + " : ";
+        str += _pipes.get(0).get_material().toString() ;
+
+        if (_pipes.size()>1 && !_pipes.get(0).equals(_pipes.get(1))){
+                str +=  " \\ " + _pipes.get(1).get_material().toString();
+        }
+
+        return str;
+    }
     public abstract boolean conductWater(Segment s);
 
     // ---------------------- Порождает события -----------------------------

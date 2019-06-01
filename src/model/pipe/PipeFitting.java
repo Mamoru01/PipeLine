@@ -40,4 +40,20 @@ public class PipeFitting extends Segment{
         firePourWater();
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "PipeFitting{" +
+                "_point=" + _point +
+                ", _pipes=" + _pipes +
+                ", PlayerListeners=" + PlayerListeners +
+                '}';
+    }
+
+
+    @Override
+    public String type() {
+        return (_pipes.get(0).equals(_pipes.get(1)))?"Pipe":"Fitting";
+    }
+
 }

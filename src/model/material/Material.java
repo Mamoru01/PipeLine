@@ -8,17 +8,13 @@ import java.util.*;
 
 public class Material {
 
-    String _name;
-    List<Material> _heirs = new ArrayList<Material>();
-    Material _parent = null;
+    private String _name;
+    private List<Material> _heirs = new ArrayList<>();
+    private Material _parent = null;
 
-    BufferedImage _image = null;
+    private BufferedImage _image = null;
 
-    public Material(String _name) {
-        this._name = _name;
-    }
-
-    public Material(String name, Material parent) {
+    Material(String name, Material parent) {
         this._name = name;
         if (parent != null){
             this._parent = parent;
@@ -26,11 +22,11 @@ public class Material {
         }
     }
 
-    public void set_heirs(Material _heirs) {
+    private void set_heirs(Material _heirs) {
         this._heirs.add(_heirs);
     }
 
-    public void set_image(String path, String name) throws IOException {
+    void set_image(String path, String name) throws IOException {
         this._image = ImageIO.read(new File(path, name + ".png"));
     }
 
@@ -39,21 +35,26 @@ public class Material {
     }
 
     public boolean connectability(Material Other){
+        return compareParents(Other) || compareHeirs(Other);
+    }
 
-        if (this.equals(Other))
+    public boolean  compareParents(Material material){
+        if (this.equals(material))
             return true;
-
-        if (this._parent != null && this._parent.equals(Other))
-            return true;
-
-        for (Material heir: _heirs){
-            if (heir != null && heir.equals(Other))
-                return true;
-        }
-
+        if (_parent!=null)
+            return _parent.compareParents(material);
         return false;
     }
 
+    public boolean compareHeirs(Material material){
+        if (this.equals(material))
+            return true;
+        for(Material heir: _heirs){
+            if(heir.compareHeirs(material))
+                return true;
+        }
+        return false;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,12 +72,7 @@ public class Material {
 
     @Override
     public String toString() {
-        return "Material{" +
-                "_name='" + _name + '\'' +
-                ", _heirs=" + _heirs +
-                ", _parents=" + _parent +
-                ", _image=" + _image +
-                '}';
+        return  _name ;
     }
 
 }

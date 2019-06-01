@@ -34,4 +34,18 @@ public class Hatch  extends Segment {
     public BufferedImage get_additionalImage() {
         return get_Image("HATCH");
     }
+
+    @Override
+    public String type() {
+        return "Hatch";
+    }
+
+    @Override
+    public String toString() {
+        return "Hatch{" +
+                "_point=" + _point +
+                ", _pipes=" + _pipes +
+                ", PlayerListeners=" + PlayerListeners +
+                '}';
+    }
 }
