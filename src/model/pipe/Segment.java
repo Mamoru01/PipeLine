@@ -14,7 +14,7 @@ import java.util.List;
 import static model.pipe.Pipe.Direction.*;
 
 /**
- * Сегмент трубы.
+ * Сегмент трубы
  */
 public abstract class Segment{
 

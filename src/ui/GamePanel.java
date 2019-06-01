@@ -31,7 +31,7 @@ public class GamePanel extends JFrame implements ViewActionListner{
         setBackground(Color.darkGray);
         setResizable(false);
 
-        _pipeline = new PipeLine();
+        createOneLvL();
 
         createMenu();
         setJMenuBar(menu);
@@ -63,7 +63,11 @@ public class GamePanel extends JFrame implements ViewActionListner{
         pack();
     }
 
-    private void createLvL(){
+    private void createOneLvL(){
+       _pipeline = _lvlFactory.createLvl(_lvlFactory.get_numbersLvls().get(0));
+    }
+
+    private void createLvLMenu(){
 
         fileItems = new String[_lvlFactory.get_numbersLvls().size()+1];
         int currentlvl = 0;
@@ -135,7 +139,7 @@ public class GamePanel extends JFrame implements ViewActionListner{
 
     private void createMenu() {
 
-        createLvL();
+        createLvLMenu();
 
         menu = new JMenuBar();
         JMenu fileMenu = new JMenu("Game");

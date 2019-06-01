@@ -11,8 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Труба из которой состоят сегменты
+ */
 public class Pipe {
 
+    /**
+     * @param _material материал
+     * @param _diameter диаметр
+     * @param _direction направление
+     */
     public Pipe(Material _material, Diameter _diameter, Direction _direction) {
         this._material = _material;
         this._diameter = _diameter;
@@ -29,18 +37,27 @@ public class Pipe {
         return _material;
     }
 
+    /**
+     * Материал, из которой состоит труба
+     */
     private Material _material;
 
     public Diameter get_diameter() {
         return _diameter;
     }
 
+    /**
+     * Диаметр трубопровода
+     */
     private Diameter _diameter;
 
     public Direction get_direction() {
         return _direction;
     }
 
+    /**
+     * Направление выхода/выхода трубы относительно центра клетки
+     */
     private Direction _direction;
 
     public Boolean get_water() {
@@ -51,8 +68,14 @@ public class Pipe {
         this._water = _water;
     }
 
+    /**
+     * Наличие воды в трубе
+     */
     private Boolean _water;
 
+    /**
+     * Поворот трубы на 90 градусов по часовой стрелке
+     */
     public void rotate(){
         Map<Direction,Direction> turns = new HashMap<Direction,Direction>();
         turns.put(Direction.Up, Direction.Right);
@@ -62,6 +85,10 @@ public class Pipe {
         _direction = turns.get(_direction);
     }
 
+    /**
+     * @param other Сравниваемая труба
+     * @return true - если соединение возможно, иначе false
+     */
     public boolean connectability (Pipe other){
         return _diameter == other._diameter &&
                 _material.connectability(other.get_material());
