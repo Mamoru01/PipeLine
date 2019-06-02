@@ -40,11 +40,9 @@ public class PipeFittingView extends UnitView {
     protected ImageIcon createImage() throws IOException {
 
         String path = ConfigurationGame.path;
-        int w;
-        int h;
+        int w = _pipe.get_pipes().get(0).getImageDeametr().getWidth();
+        int h = _pipe.get_pipes().get(0).getImageDeametr().getHeight();
 
-        w = _pipe.get_pipes().get(0).getImageDeametr().getWidth();
-        h = _pipe.get_pipes().get(0).getImageDeametr().getHeight();
         BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
         Pipe pipe1 =  _pipe.get_pipes().get(0);

@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Игровое окно
+ */
 public class GamePanel extends JFrame implements ViewActionListner{
 
     private JMenuBar menu = null;
@@ -96,6 +99,9 @@ public class GamePanel extends JFrame implements ViewActionListner{
         repaintField();
     }
 
+    /**
+     * Перерисовать поле
+     */
     private void repaintField() {
 
         _fieldPanel.removeAll();
@@ -175,6 +181,9 @@ public class GamePanel extends JFrame implements ViewActionListner{
         }
     }
 
+    /**
+     * Закончить игру и тестировать трубопровод
+     */
     private void  stopGame(){
         _timer.stop();
         setEnabledField(false);
@@ -184,6 +193,9 @@ public class GamePanel extends JFrame implements ViewActionListner{
                 "<html><h2>"+ str +"</h2><i>"+ str +"</i>");
     }
 
+    /**
+     * Начать игру. Запустить таймер.
+     */
     private  void startGame(){
         setEnabledField(true);
         createField();
