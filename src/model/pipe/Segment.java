@@ -13,9 +13,12 @@ import java.util.List;
 
 import static model.pipe.Pipe.Direction.*;
 
+/**
+ * Сегмент трубы
+ */
 public abstract class Segment{
 
-    protected PipeLine get_pipeLine() {
+    public PipeLine get_pipeLine() {
         return _pipeLine;
     }
 
@@ -23,14 +26,25 @@ public abstract class Segment{
         this._pipeLine = _pipeLine;
     }
 
+    /**
+     * Трубопровод к которому относится сегмент
+     */
     private PipeLine _pipeLine;
+
 
     public Point get_point() {
         return _point;
     }
 
+    /**
+     * Расположение фитинга на поле
+     */
     protected Point _point;
 
+
+    /**
+     * @param _point Расположение фитинга на поле
+     */
     public Segment(Point _point) {
         this._point = _point;
     }
@@ -39,10 +53,16 @@ public abstract class Segment{
         return _pipes;
     }
 
+    /**
+     * Трубы из которых состоит сегмент
+     */
     protected List<Pipe> _pipes = new ArrayList<>();
 
     abstract BufferedImage get_additionalImage();
 
+    /**
+     * Поворот сегмента на 90 градусов по часовой стрелке
+     */
     public void rotate() {
         for (Pipe p : _pipes) {
             p.rotate();
@@ -51,7 +71,6 @@ public abstract class Segment{
 
     protected BufferedImage get_Image(String name) {
         BufferedImage Image = null;
-
         try {
             Image = ImageIO.read(new File(ConfigurationGame.path, name + ".png"));
         } catch (IOException e) {
@@ -61,16 +80,23 @@ public abstract class Segment{
         return Image;
     }
 
+    /**
+     * @return Первая труба без воды из списка
+     */
     public Pipe get_EmptyPipe(){
         for(Pipe p: _pipes){
-            if (p.get_water() == false)
+            if (!p.get_water())
                 return p;
         }
         return null;
     }
 
+    /**
+     * @param s подключаемый сегмент
+     * @return null - Если сегменты нельзя подключить друг к другу или труба (часть сегмента), к которой идёт подключение
+     * в текущем сегменте
+     */
     public Pipe connect(Segment s){
-
         for (Pipe currentP : _pipes){
             for (Pipe nextP : s.get_pipes()){
                 if ((get_point().x + 1 == s.get_point().x && currentP.get_direction() == Down && nextP.get_direction() == Up)
@@ -79,15 +105,16 @@ public abstract class Segment{
                         || (get_point().y - 1 == s.get_point().y && currentP.get_direction() == Left && nextP.get_direction() == Right)){
                     return currentP;
                 }
-
             }
         }
-
         return null;
     }
 
     public abstract String type();
 
+    /**
+     * @return описание сегмента
+     */
     public String getDescriptions(){
 
         String str = type() + " : ";

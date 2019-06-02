@@ -12,7 +12,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Сегмент трубы, который может быть помещён в клетку поля
+ */
 public abstract class UnitView extends JButton implements UnitPipeActionListner {
+
+    //TODO добавить свойство сегмент в текущий класс и удалить свойства в наследниках tap, hatch, pipeFitting.
+    //TODO переписать функцию вращения, получение координат и тд
 
     public UnitView() {
         setFocusable(false);
@@ -31,6 +37,7 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
 
     public abstract Point getPoint();
 
+    //--------------------------------- Функции для работы с изображением --------------------------
     protected BufferedImage createFlipped(BufferedImage image)
     {
         AffineTransform at = new AffineTransform();
@@ -69,6 +76,9 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
         return newImage;
     }
 
+    /**
+     * Повернуть сегмент трубы на 90 градусов по часовой клетке (View + model)
+     */
     public abstract void rotated();
 
     protected void rotatedIcon(){
@@ -97,7 +107,8 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
 
     // ---------------------- Порождает события -----------------------------
 
-    ArrayList<ViewActionListner> PlayerListeners = new ArrayList();
+
+    private ArrayList<ViewActionListner> PlayerListeners = new ArrayList();
 
     // Присоединяет слушателя
     public void addViewActionListener(ViewActionListner l) {
@@ -110,7 +121,7 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
     }
 
     // Оповещает слушателей о событии
-    protected void fireUpdateView() {
+    private void fireUpdateView() {
 
         for (ViewActionListner p:PlayerListeners){
             p.updateView();
@@ -122,6 +133,4 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
             e.printStackTrace();
         }
     }
-
-
 }

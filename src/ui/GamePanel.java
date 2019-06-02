@@ -8,13 +8,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Игровое окно
+ */
 public class GamePanel extends JFrame implements ViewActionListner{
 
     private JMenuBar menu = null;
     private  String fileItems[];
 
     private final JPanel _fieldPanel = new JPanel();
-    private final JButton _readyButton = new JButton("Готово");
+    private final JButton _readyButton = new JButton("Ready");
 
     private final JProgressBar _progressBar = new JProgressBar(0, 1000);
 
@@ -25,25 +28,20 @@ public class GamePanel extends JFrame implements ViewActionListner{
 
     public GamePanel() {
 
-        //Окно
         JLabel logoLabel = new JLabel("PipeLine");
         getContentPane().add(logoLabel, BorderLayout.CENTER);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.darkGray);
         setResizable(false);
 
-        //Создать модель тестового трубопровода
-        _pipeline = new PipeLine();
+        createOneLvL();
 
-        // Меню
         createMenu();
         setJMenuBar(menu);
 
-
-        //Виджеты основной части окна
         Box mainBox = Box.createVerticalBox();
 
-        // Шапка
+
         mainBox.add(Box.createVerticalStrut(10));
         _readyButton.setBackground(Color.WHITE);
         JPanel panel = new JPanel();
@@ -57,7 +55,7 @@ public class GamePanel extends JFrame implements ViewActionListner{
         panel.setBackground(Color.WHITE);
         mainBox.add(panel, BorderLayout.PAGE_START);
 
-        // Игровое поле
+        // Game field
         mainBox.add(Box.createVerticalStrut(10));
         _fieldPanel.setDoubleBuffered(true);
         createField();
@@ -68,17 +66,21 @@ public class GamePanel extends JFrame implements ViewActionListner{
         pack();
     }
 
-    private void createLvL(){
+    private void createOneLvL(){
+       _pipeline = _lvlFactory.createLvl(_lvlFactory.get_numbersLvls().get(0));
+    }
+
+    private void createLvLMenu(){
 
         fileItems = new String[_lvlFactory.get_numbersLvls().size()+1];
         int currentlvl = 0;
 
         for (Long number : _lvlFactory.get_numbersLvls()){
-            fileItems[currentlvl] = ("уровень №" + number);
+            fileItems[currentlvl] = ("lvl №" + number);
             currentlvl++;
         }
 
-        fileItems[currentlvl] = "Выход";
+        fileItems[currentlvl] = "Exit";
     }
 
     private void createField(){
@@ -97,6 +99,9 @@ public class GamePanel extends JFrame implements ViewActionListner{
         repaintField();
     }
 
+    /**
+     * Перерисовать поле
+     */
     private void repaintField() {
 
         _fieldPanel.removeAll();
@@ -140,10 +145,10 @@ public class GamePanel extends JFrame implements ViewActionListner{
 
     private void createMenu() {
 
-        createLvL();
+        createLvLMenu();
 
         menu = new JMenuBar();
-        JMenu fileMenu = new JMenu("Игра");
+        JMenu fileMenu = new JMenu("Game");
 
         for (String fileItem : fileItems) {
 
@@ -163,7 +168,7 @@ public class GamePanel extends JFrame implements ViewActionListner{
 
             String command = e.getActionCommand();
 
-            if ("выход".equals(command)) {
+            if ("exit".equals(command)) {
                 System.exit(0);
             }
 
@@ -176,15 +181,21 @@ public class GamePanel extends JFrame implements ViewActionListner{
         }
     }
 
+    /**
+     * Закончить игру и тестировать трубопровод
+     */
     private void  stopGame(){
         _timer.stop();
         setEnabledField(false);
         String str;
-        str = (_pipeline.testing())?"Выигрыш":"Проигрыш";
+        str = (_pipeline.testing())?"Win":"Losing";
         JOptionPane.showMessageDialog(this,
                 "<html><h2>"+ str +"</h2><i>"+ str +"</i>");
     }
 
+    /**
+     * Начать игру. Запустить таймер.
+     */
     private  void startGame(){
         setEnabledField(true);
         createField();

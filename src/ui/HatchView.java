@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class HatchView extends UnitView {
 
-    Hatch _hatch;
+    private Hatch _hatch;
 
     public HatchView(Hatch hatch) {
         super();
