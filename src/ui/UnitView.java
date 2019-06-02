@@ -17,6 +17,9 @@ import java.util.ArrayList;
  */
 public abstract class UnitView extends JButton implements UnitPipeActionListner {
 
+    //TODO добавить свойство сегмент в текущий класс и удалить свойства в наследниках tap, hatch, pipeFitting.
+    //TODO переписать функцию вращения, получение координат и тд
+
     public UnitView() {
         setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder());
