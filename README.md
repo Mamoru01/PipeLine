@@ -30,3 +30,9 @@
 ## Generate JavaDoc
 Для генерирования java-документации в поле "другие аргументы командной строки" нужно добавить 
 "-encoding UTF-8 -docencoding UTF-8 -charset UTF-8" 
+
+## UML class-diagram
+
+![alt-текст][logo]
+
+[logo]: https://pp.userapi.com/c849236/v849236253/19c431/F23UvsijQgY.jpg "UML"
