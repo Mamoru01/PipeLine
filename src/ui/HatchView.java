@@ -13,11 +13,12 @@ import java.io.IOException;
 
 public class HatchView extends UnitView {
 
-    Hatch _hatch;
+    private Hatch _hatch;
 
     public HatchView(Hatch hatch) {
         super();
         this._hatch = hatch;
+        _hatch.addUnitPipeActionListener(this);
 
         try {
             this.setIcon(createImage());
@@ -26,6 +27,8 @@ public class HatchView extends UnitView {
             this.setText("Error");
             this.setBackground(Color.WHITE);
         }
+
+        setDescriprion();
     }
 
     @Override
@@ -76,5 +79,10 @@ public class HatchView extends UnitView {
     public void rotated() {
         this.rotatedIcon();
         _hatch.rotate();
+    }
+
+    @Override
+    protected String getDescriprion() {
+        return _hatch.getDescriptions();
     }
 }

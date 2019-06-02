@@ -1,5 +1,8 @@
 package ui;
 
+import model.events.UnitPipeActionListner;
+import model.events.ViewActionListner;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,21 +10,34 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public abstract class UnitView extends JButton {
+/**
+ * Сегмент трубы, который может быть помещён в клетку поля
+ */
+public abstract class UnitView extends JButton implements UnitPipeActionListner {
+
+    //TODO добавить свойство сегмент в текущий класс и удалить свойства в наследниках tap, hatch, pipeFitting.
+    //TODO переписать функцию вращения, получение координат и тд
 
     public UnitView() {
         setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder());
         setBackground(Color.darkGray);
-        //addActionListener(actionListener);
         addActionListener(new ButtonAction());
     }
+
+    protected void setDescriprion(){
+        setToolTipText(getDescriprion());
+    }
+
+    protected abstract String getDescriprion();
 
     protected abstract ImageIcon createImage() throws IOException;
 
     public abstract Point getPoint();
 
+    //--------------------------------- Функции для работы с изображением --------------------------
     protected BufferedImage createFlipped(BufferedImage image)
     {
         AffineTransform at = new AffineTransform();
@@ -60,6 +76,9 @@ public abstract class UnitView extends JButton {
         return newImage;
     }
 
+    /**
+     * Повернуть сегмент трубы на 90 градусов по часовой клетке (View + model)
+     */
     public abstract void rotated();
 
     protected void rotatedIcon(){
@@ -77,4 +96,41 @@ public abstract class UnitView extends JButton {
         }
     }
 
+    public void conductWater(){
+        setBackground(Color.CYAN);
+        fireUpdateView();
+    }
+    public void pourWater(){
+        setBackground(Color.RED);
+        fireUpdateView();
+    }
+
+    // ---------------------- Порождает события -----------------------------
+
+
+    private ArrayList<ViewActionListner> PlayerListeners = new ArrayList();
+
+    // Присоединяет слушателя
+    public void addViewActionListener(ViewActionListner l) {
+        PlayerListeners.add(l);
+    }
+
+    // Отсоединяет слушателя
+    public void removeViewActionListener(ViewActionListner l) {
+        PlayerListeners.remove(l);
+    }
+
+    // Оповещает слушателей о событии
+    private void fireUpdateView() {
+
+        for (ViewActionListner p:PlayerListeners){
+            p.updateView();
+        }
+
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

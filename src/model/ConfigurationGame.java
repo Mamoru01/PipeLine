@@ -1,5 +1,15 @@
 package model;
 
+/**
+ * Конфигурационный класс для игры
+ */
 public class ConfigurationGame {
-    public static String path = "D:/VSTU/ООП/pipeline/1x";
+    /**
+     * Путь к изображениям
+     */
+    public static String path = System.getProperty("user.dir") + "\\resources\\Image";
+    /**
+     * Путь к файлам описания уровней
+     */
+    public static String pathLvl = System.getProperty("user.dir") + "\\resources";
 }

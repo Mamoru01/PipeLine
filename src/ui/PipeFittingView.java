@@ -18,6 +18,7 @@ public class PipeFittingView extends UnitView {
     public PipeFittingView(PipeFitting pipeFitting) {
         super();
         this._pipe = pipeFitting;
+        _pipe.addUnitPipeActionListener(this);
 
         try {
             this.setIcon(createImage());
@@ -26,6 +27,8 @@ public class PipeFittingView extends UnitView {
             this.setText("Error");
             this.setBackground(Color.WHITE);
         }
+
+        setDescriprion();
     }
 
     @Override
@@ -37,11 +40,9 @@ public class PipeFittingView extends UnitView {
     protected ImageIcon createImage() throws IOException {
 
         String path = ConfigurationGame.path;
-        int w;
-        int h;
+        int w = _pipe.get_pipes().get(0).getImageDeametr().getWidth();
+        int h = _pipe.get_pipes().get(0).getImageDeametr().getHeight();
 
-        w = _pipe.get_pipes().get(0).getImageDeametr().getWidth();
-        h = _pipe.get_pipes().get(0).getImageDeametr().getHeight();
         BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
         Pipe pipe1 =  _pipe.get_pipes().get(0);
@@ -124,5 +125,9 @@ public class PipeFittingView extends UnitView {
         _pipe.rotate();
     }
 
+    @Override
+    protected String getDescriprion() {
+        return _pipe.getDescriptions();
+    }
 
 }

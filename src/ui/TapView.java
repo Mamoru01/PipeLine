@@ -13,11 +13,13 @@ import java.io.IOException;
 
 public class TapView extends UnitView{
 
-    Tap _tap;
+    private Tap _tap;
 
     public TapView(Tap tap) {
         super();
+
         this._tap = tap;
+        _tap.addUnitPipeActionListener(this);
 
         try {
             this.setIcon(createImage());
@@ -27,6 +29,7 @@ public class TapView extends UnitView{
             this.setBackground(Color.WHITE);
         }
 
+        setDescriprion();
     }
 
     @Override
@@ -38,12 +41,10 @@ public class TapView extends UnitView{
     protected ImageIcon createImage() throws IOException {
 
         String path = ConfigurationGame.path;
-        int w;
-        int h;
+        int w = _tap.get_pipes().get(0).getImageDeametr().getWidth();
+        int h = _tap.get_pipes().get(0).getImageDeametr().getHeight();
 
-        w = _tap.get_pipes().get(0).getImageDeametr().getWidth();
-        h = _tap.get_pipes().get(0).getImageDeametr().getHeight();
-        BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+         BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
         Pipe pipe1 =  _tap.get_pipes().get(0);
         BufferedImage m1 = pipe1.get_material().get_image();
@@ -78,4 +79,8 @@ public class TapView extends UnitView{
         _tap.rotate();
     }
 
+    @Override
+    protected String getDescriprion() {
+        return _tap.getDescriptions();
+    }
 }
