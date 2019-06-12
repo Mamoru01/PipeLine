@@ -1,4 +1,4 @@
-package model.pipe;
+package model.pipeline;
 
 import model.ConfigurationGame;
 import model.material.Material;
@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-//TODO Переделать под паттерн - строитель
 
 /**
  * Фабрика трубопроводов
@@ -78,24 +76,24 @@ public class FactoryPipeLine {
      * @param JSONsegments json-массив, описывающий сегменты уровня
      * @return Лист - сегментов
      */
-    private List<Segment>  get_Segments(JSONArray JSONsegments){
+    private List<ElementPipeline>  get_Segments(JSONArray JSONsegments){
 
-        List<Segment> segments = new ArrayList<>();
+        List<ElementPipeline> elementPipelines = new ArrayList<>();
 
         for (Object jsoNsegment : JSONsegments) {
-            segments.add(get_Segment((JSONObject) jsoNsegment));
+            elementPipelines.add(get_Segment((JSONObject) jsoNsegment));
         }
 
-        return segments;
+        return elementPipelines;
     }
 
     /**
      * @param JSONsegment json-объект, описывающий сегмент
      * @return Сегмент трубопровода
      */
-    private Segment  get_Segment(JSONObject JSONsegment){
+    private ElementPipeline get_Segment(JSONObject JSONsegment){
 
-        Segment s = null;
+        ElementPipeline s = null;
 
         Point p = new Point();
 
@@ -162,7 +160,7 @@ public class FactoryPipeLine {
 
     /**
      * @param JSONpipe json-объект, описывающий конец трубы
-     * @return pipe
+     * @return pipeline
      */
         private Pipe  get_Pipe(JSONObject JSONpipe){
 
@@ -180,27 +178,33 @@ public class FactoryPipeLine {
      * @param numberLvl id-уровня
      * @return трубопровод из уровня
      */
-    public PipeLine createLvl(Long numberLvl){
+    public PipeLineField createLvl(Long numberLvl){
         if (jo == null)
             return null;
 
-        Dimension dimension = new Dimension();
-        List<Segment> segments;
-        int time;
-
         JSONObject lvl = get_Lvl(numberLvl);
-
         assert lvl != null;
 
-        time = Integer.parseInt((String) lvl.get("time"));
-        List <String> dimensionListStr = Arrays.asList(((String) lvl.get("dimension")).split("\\*"));
+        //Шаг 1. Создать пустое поле
+        PipeLineField pl = PipeLineField.createEmptyPipeLineField();
 
+        //Шаг 2. Записать время
+        pl.set_Time(Integer.parseInt((String) lvl.get("time")));
+
+        //Шаг 3. Записать размеры
+        List <String> dimensionListStr = Arrays.asList(((String) lvl.get("dimension")).split("\\*"));
+        Dimension dimension = new Dimension();
         dimension.width = Integer.parseInt(dimensionListStr.get(0));
         dimension.height = Integer.parseInt(dimensionListStr.get(1));
+        pl.set_dimension(dimension);
 
-        segments = get_Segments((JSONArray)lvl.get("segments"));
+        //Шаг 4. Записать элементы трубопровода
+        List<ElementPipeline> elementsPipeline;
+        elementsPipeline = get_Segments((JSONArray)lvl.get("segments"));
+        for (ElementPipeline element: elementsPipeline) {
+            pl.set_elementPipeline(element);
+        }
 
-        return new PipeLine(dimension,segments, time);
+        return pl.is_Ready()?pl:null;
     }
-
 }

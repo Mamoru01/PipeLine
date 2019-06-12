@@ -1,8 +1,8 @@
 package ui;
 
 import model.ConfigurationGame;
-import model.pipe.Pipe;
-import model.pipe.PipeFitting;
+import model.pipeline.Pipe;
+import model.pipeline.PipeFitting;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

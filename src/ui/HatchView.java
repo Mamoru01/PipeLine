@@ -1,8 +1,8 @@
 package ui;
 
 import model.ConfigurationGame;
-import model.pipe.Hatch;
-import model.pipe.Pipe;
+import model.pipeline.Hatch;
+import model.pipeline.Pipe;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

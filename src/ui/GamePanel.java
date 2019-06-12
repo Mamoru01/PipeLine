@@ -1,7 +1,7 @@
 package ui;
 
 import model.events.ViewActionListner;
-import model.pipe.*;
+import model.pipeline.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,14 +21,14 @@ public class GamePanel extends JFrame implements ViewActionListner{
 
     private final JProgressBar _progressBar = new JProgressBar(0, 1000);
 
-    private PipeLine _pipeline;
+    private PipeLineField _pipeline;
 
     private FactoryPipeLine _lvlFactory = new FactoryPipeLine();
 
 
     public GamePanel() {
 
-        JLabel logoLabel = new JLabel("PipeLine");
+        JLabel logoLabel = new JLabel("PipeLineField");
         getContentPane().add(logoLabel, BorderLayout.CENTER);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBackground(Color.darkGray);
@@ -112,12 +112,12 @@ public class GamePanel extends JFrame implements ViewActionListner{
             for (int col = 1; col <= _pipeline.get_dimension().width; col++)
             {
                 try {
-                    if (_pipeline.get_Segment(new Point(row,col)) instanceof PipeFitting){
-                        unitView = new PipeFittingView((PipeFitting)_pipeline.get_Segment(new Point(row,col)));
-                    }else if (_pipeline.get_Segment(new Point(row,col)) instanceof Tap){
-                        unitView = new TapView((Tap)_pipeline.get_Segment(new Point(row,col)));
-                    }else/* if (_pipeline.getSegment(new Point(row,col)) instanceof Hatch)*/{
-                        unitView = new HatchView((Hatch)_pipeline.get_Segment(new Point(row,col)));
+                    if (_pipeline.get_ElementsPipeline(row,col) instanceof PipeFitting){
+                        unitView = new PipeFittingView((PipeFitting)_pipeline.get_ElementsPipeline(row,col));
+                    }else if (_pipeline.get_ElementsPipeline(row,col) instanceof Tap){
+                        unitView = new TapView((Tap)_pipeline.get_ElementsPipeline(row,col));
+                    }else/* if (_pipeline.getSegment(row,col) instanceof Hatch)*/{
+                        unitView = new HatchView((Hatch)_pipeline.get_ElementsPipeline(row,col));
                     }
                     unitView.addViewActionListener(this);
                     _fieldPanel.add(unitView);
@@ -188,7 +188,7 @@ public class GamePanel extends JFrame implements ViewActionListner{
         _timer.stop();
         setEnabledField(false);
         String str;
-        str = (_pipeline.testing())?"Win":"Losing";
+        str = (_pipeline.testingPipeline())?"Win":"Losing";
         JOptionPane.showMessageDialog(this,
                 "<html><h2>"+ str +"</h2><i>"+ str +"</i>");
     }
