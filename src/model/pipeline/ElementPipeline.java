@@ -58,7 +58,7 @@ public abstract class ElementPipeline implements Cloneable {
      */
     List<Pipe> _pipes = new ArrayList<>();
 
-    abstract BufferedImage get_additionalImage();
+    public abstract BufferedImage get_additionalImage();
 
     /**
      * Поворот сегмента на 90 градусов по часовой стрелке

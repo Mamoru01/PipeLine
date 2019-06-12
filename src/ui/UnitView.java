@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,9 +15,6 @@ import java.util.ArrayList;
  * Сегмент трубы, который может быть помещён в клетку поля
  */
 public abstract class UnitView extends JButton implements UnitPipeActionListner {
-
-    //TODO добавить свойство сегмент в текущий класс и удалить свойства в наследниках tap, hatch, pipeFitting.
-    //TODO переписать функцию вращения, получение координат и тд
 
     public UnitView() {
         setFocusable(false);
@@ -37,44 +33,6 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
 
     public abstract Point getPoint();
 
-    //--------------------------------- Функции для работы с изображением --------------------------
-    protected BufferedImage createFlipped(BufferedImage image)
-    {
-        AffineTransform at = new AffineTransform();
-        at.concatenate(AffineTransform.getScaleInstance(1, -1));
-        at.concatenate(AffineTransform.getTranslateInstance(0, -image.getHeight()));
-        return createTransformed(image, at);
-    }
-
-    protected BufferedImage createRotated90(BufferedImage image)
-    {
-        AffineTransform at = AffineTransform.getRotateInstance(
-                Math.PI/2, image.getWidth()/2, image.getHeight()/2);
-        return createTransformed(image, at);
-    }
-
-    protected BufferedImage createRotated180(BufferedImage image)
-    {
-        return createRotated90(createRotated90(image));
-    }
-
-    protected BufferedImage createRotated270(BufferedImage image)
-    {
-        return createRotated90(createRotated180(image));
-    }
-
-    protected static BufferedImage createTransformed(
-            BufferedImage image, AffineTransform at)
-    {
-        BufferedImage newImage = new BufferedImage(
-                image.getWidth(), image.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = newImage.createGraphics();
-        g.transform(at);
-        g.drawImage(image, 0, 0, null);
-        g.dispose();
-        return newImage;
-    }
 
     /**
      * Повернуть сегмент трубы на 90 градусов по часовой клетке (View + model)
@@ -87,7 +45,7 @@ public abstract class UnitView extends JButton implements UnitPipeActionListner 
         Graphics g = combined.getGraphics();
         g.drawImage(((ImageIcon)getIcon()).getImage(), 0, 0, null);
 
-        setIcon(new ImageIcon(createRotated90(combined)));
+        setIcon(new ImageIcon(util.createRotated90(combined)));
     }
 
     public class ButtonAction implements ActionListener {

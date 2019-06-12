@@ -27,7 +27,7 @@ public class PipeFitting extends ElementPipeline {
      * @return null
      */
     @Override
-    BufferedImage get_additionalImage() {
+    public BufferedImage get_additionalImage() {
         return null;
     }
 
