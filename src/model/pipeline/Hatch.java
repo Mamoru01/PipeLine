@@ -1,4 +1,4 @@
-package model.pipe;
+package model.pipeline;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 /**
  * Люк. Сегмент трубы, которым должен заканчиваться трубопровод
  */
-public class Hatch  extends Segment {
+public class Hatch  extends ElementPipeline {
 
     /**
      * @param _point расположение люка на поле
@@ -15,30 +15,8 @@ public class Hatch  extends Segment {
      */
     public Hatch(Point _point, Pipe p1) {
         super(_point);
+        p1.set_elementPipeLine(this);
         _pipes.add(p1);
-    }
-
-    /**
-     * @param previousSegment Предыдущий сегмент трубопровода
-     * @return True - если текущий сегмент может провести воду, false - если нет
-     */
-    @Override
-    public boolean conductWater(Segment previousSegment) {
-        Pipe currentPipe = connect(previousSegment);
-        Pipe otherPipe = previousSegment.connect(this);
-        if (currentPipe != null &&
-                otherPipe != null &&
-                currentPipe.connectability(otherPipe))
-        {
-            currentPipe.set_water(true);
-            otherPipe.set_water(true);
-            connect(previousSegment).set_water(true);
-            fireConductWater();
-            return true;
-
-        }
-        firePourWater();
-        return false;
     }
 
     /**

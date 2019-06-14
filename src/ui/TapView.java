@@ -1,14 +1,9 @@
 package ui;
 
-import model.ConfigurationGame;
-import model.pipe.Pipe;
-import model.pipe.Tap;
 
-import javax.imageio.ImageIO;
+import model.pipeline.Tap;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class TapView extends UnitView{
@@ -39,38 +34,7 @@ public class TapView extends UnitView{
 
     @Override
     protected ImageIcon createImage() throws IOException {
-
-        String path = ConfigurationGame.path;
-        int w = _tap.get_pipes().get(0).getImageDeametr().getWidth();
-        int h = _tap.get_pipes().get(0).getImageDeametr().getHeight();
-
-         BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-
-        Pipe pipe1 =  _tap.get_pipes().get(0);
-        BufferedImage m1 = pipe1.get_material().get_image();
-        BufferedImage d1 = pipe1.getImageDeametr();
-        BufferedImage t1 = _tap.get_additionalImage();
-
-        if (pipe1.get_direction() == Pipe.Direction.Left){
-            m1 = createRotated90(m1);
-            d1 = createRotated90(d1);
-        }else if (pipe1.get_direction() == Pipe.Direction.Up){
-            m1 = createRotated180(m1);
-            d1 = createRotated180(d1);
-        }else if (pipe1.get_direction() == Pipe.Direction.Right){
-            m1 = createRotated270(m1);
-            d1 = createRotated270(d1);
-        }
-
-        Graphics g = combined.getGraphics();
-        g.drawImage(m1, 0, 0, null);
-        g.drawImage(d1, 0, 0, null);
-        g.drawImage(t1, 0, 0, null);
-
-
-        ImageIO.write(combined, "PNG", new File(path, "combined1.png"));
-
-        return new ImageIcon(combined);
+        return util.createOnePipeImage(_tap);
     }
 
     @Override

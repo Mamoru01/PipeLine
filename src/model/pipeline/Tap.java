@@ -1,4 +1,4 @@
-package model.pipe;
+package model.pipeline;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 /**
  * Кран. Сегмент трубы, которым должен начинаться трубопровод
  */
-public class Tap extends Segment {
+public class Tap extends ElementPipeline {
 
     /**
      * @param _point расположение крана на поле
@@ -14,6 +14,7 @@ public class Tap extends Segment {
      */
     public Tap(Point _point, Pipe p1) {
         super(_point);
+        p1.set_elementPipeLine(this);
         _pipes.add(p1);
     }
 
@@ -21,15 +22,7 @@ public class Tap extends Segment {
      * @return True - если все последующие могут провести воду, false - если нет
      */
     private boolean turnWater(){
-        Segment s = get_pipeLine().nextSegment(this);
-
-        _pipes.get(0).set_water(true);
-        if (s == null) {
-            firePourWater();
-            return false;
-        }
-        fireConductWater();
-        return s.conductWater(this);
+        return get_EmptyPipe().turnWater(null);
     }
 
     /**
@@ -40,14 +33,6 @@ public class Tap extends Segment {
         return get_Image("TAP");
     }
 
-    /**
-     * @param s null
-     * @return True - если все последующие могут провести воду, false - если нет
-     */
-    @Override
-    public boolean conductWater(Segment s) {
-        return turnWater();
-    }
 
     @Override
     public String type() {

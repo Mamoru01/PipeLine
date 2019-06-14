@@ -58,7 +58,7 @@ public class Material {
      * @param name Название изображения (без маски)
      * @throws IOException Нет такого изображения
      */
-    public void set_image(String path, String name) throws IOException {
+    void set_image(String path, String name) throws IOException {
         this._image = ImageIO.read(new File(path, name + ".png"));
     }
 

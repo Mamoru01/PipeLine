@@ -1,4 +1,4 @@
-package model.pipe;
+package model.pipeline;
 
 import model.ConfigurationGame;
 import model.material.Material;
@@ -33,6 +33,12 @@ public class Pipe {
         }
     }
 
+    public void set_elementPipeLine(ElementPipeline _elementPipeLine) {
+        this._elementPipeLine = _elementPipeLine;
+    }
+
+    private ElementPipeline _elementPipeLine;
+
     public Material get_material() {
         return _material;
     }
@@ -60,12 +66,12 @@ public class Pipe {
      */
     private Direction _direction;
 
-    public Boolean get_water() {
+    Boolean get_water() {
         return _water;
     }
 
-    public void set_water(Boolean _water) {
-        this._water = _water;
+    void set_water() {
+        this._water = true;
     }
 
     /**
@@ -89,9 +95,36 @@ public class Pipe {
      * @param other Сравниваемая труба
      * @return true - если соединение возможно, иначе false
      */
-    public boolean connectability (Pipe other){
+    private boolean connectability(Pipe other){
         return _diameter == other._diameter &&
                 _material.connectability(other.get_material());
+    }
+
+    public boolean turnWater(Pipe previousPipe){
+        boolean res = true;
+        if (previousPipe != null && previousPipe._elementPipeLine != this._elementPipeLine){
+            res = this.connectability(previousPipe);
+
+            if (res) {
+                previousPipe.set_water();
+                set_water();
+            }
+            previousPipe._elementPipeLine.conductWater(res);
+
+            if (this._elementPipeLine instanceof Hatch) {
+                this._elementPipeLine.conductWater(res);
+                return res;
+            }
+        }
+
+        if (res){
+            Pipe nextP = this._elementPipeLine.nextPipeInPipeLine(this);
+            res = (nextP!=null)?nextP.turnWater(this):false;
+            if (nextP == null)
+                this._elementPipeLine.conductWater(res);
+        }
+
+        return res;
     }
 
     @Override
